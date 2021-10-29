@@ -43,10 +43,29 @@ defmodule Chess do
           :pawn -> valid_move_pawn?(game, origin, dest)
           :tower -> valid_move_tower?(game, origin, dest)
           :horse -> valid_move_horse?(game, origin, dest)
+          :bishop -> valid_move_bishop?(game, origin, dest)
           _ -> true
         end
       true ->
         false
+    end
+  end
+
+  defp valid_move_bishop?(game, {x, y}, {z, w}) do
+    px = z - x
+    py = w - y
+    cond do
+      abs(px) == abs(py) ->
+        {mx, my} = { (if px < 0, do: -1, else: 1), (if py < 0, do: -1, else: 1)}
+
+        apx = abs(px)
+        apx == 1 || Enum.all? 1..apx-1, fn(a) ->
+          xa = x + a * mx
+          ya = y + a * my
+
+          value_at(game, {xa, ya}) == nil
+        end
+      true -> false
     end
   end
 
@@ -98,7 +117,6 @@ defmodule Chess do
           |> List.replace_at(pos_index, nil)
 
         %Game{game | board: new_board}
-
       true ->
         game
     end

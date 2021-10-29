@@ -171,11 +171,38 @@ defmodule Chess.ChessTest do
     refute Chess.new_game |> Chess.valid_move?({-1, 0}, {1, 0})
   end
 
-  test "valid_move? should return false when try to move to the sabe position" do
+  test "valid_move? should return false when try to move to the same position" do
     game = Chess.new_game
 
     refute Chess.valid_move?(game, {6, 0}, {6, 0})
     refute Chess.valid_move?(game, {7, 0}, {7, 0})
     refute Chess.valid_move?(game, {7, 1}, {7, 1})
+  end
+
+  test "valid_move? should return false when try to move bishop horinzontaly or verically" do
+    game = Chess.new_game
+      |> Chess.move({7, 2}, {4, 1})
+
+    refute Chess.valid_move?(game, {4, 1}, {3, 1})
+    refute Chess.valid_move?(game, {4, 1}, {5, 1})
+    refute Chess.valid_move?(game, {4, 1}, {4, 2})
+    refute Chess.valid_move?(game, {4, 1}, {4,0})
+  end
+
+  test "valid_move? should return true when try to move bishop in diagonal" do
+    game = Chess.new_game
+      |> Chess.move({7, 2}, {4, 1})
+
+    assert Chess.valid_move?(game, {4, 1}, {5, 0})
+    assert Chess.valid_move?(game, {4, 1}, {3, 2})
+    assert Chess.valid_move?(game, {4, 1}, {1, 4})
+  end
+
+  test "valid_move? should return false when try to move bishop over another piece" do
+    game = Chess.new_game
+      |> Chess.move({7, 2}, {2, 3})
+
+    refute Chess.valid_move?(game, {2, 3}, {0, 5})
+    refute Chess.valid_move?(game, {2, 3}, {0, 1})
   end
 end
