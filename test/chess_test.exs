@@ -127,6 +127,30 @@ defmodule Chess.ChessTest do
     refute Chess.valid_move?(game, {7, 7}, {5, 7})
   end
 
+  test "valid_move? should return false if horse tries to move to invalid spaces" do
+    game = Chess.new_game
+
+    refute Chess.valid_move?(game, {7, 1}, {5, 1})
+    refute Chess.valid_move?(game, {7, 1}, {4, 1})
+  end
+
+  test "valid_move? should return true if the horse do a valid move vertical" do
+    game = Chess.new_game
+
+    assert Chess.valid_move?(game, {7,1}, {5,0})
+    assert Chess.valid_move?(game, {7,1}, {5,2})
+  end
+
+  test "valid_move? should return true if the horse do a valid move horizonal" do
+    game = Chess.new_game
+      |> Chess.move({7, 1}, {4, 2})
+
+    assert Chess.valid_move?(game, {4, 2}, {3, 0})
+    assert Chess.valid_move?(game, {4, 2}, {5, 0})
+    assert Chess.valid_move?(game, {4, 2}, {5, 4})
+    assert Chess.valid_move?(game, {4, 2}, {3, 4})
+  end
+
   test "valid_move? should return false if try to move a piece that is not from the current player" do
     refute Chess.new_game |> Chess.valid_move?({1, 0}, {2, 0})
   end
@@ -143,8 +167,15 @@ defmodule Chess.ChessTest do
     refute Chess.new_game |> Chess.valid_move?({6, 0}, {-1, 0})
   end
 
-  test "valid_move? should return if try to move from invalid position" do
+  test "valid_move? should return false if try to move from invalid position" do
     refute Chess.new_game |> Chess.valid_move?({-1, 0}, {1, 0})
   end
 
+  test "valid_move? should return false when try to move to the sabe position" do
+    game = Chess.new_game
+
+    refute Chess.valid_move?(game, {6, 0}, {6, 0})
+    refute Chess.valid_move?(game, {7, 0}, {7, 0})
+    refute Chess.valid_move?(game, {7, 1}, {7, 1})
+  end
 end

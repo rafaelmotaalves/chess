@@ -42,11 +42,17 @@ defmodule Chess do
         case type do
           :pawn -> valid_move_pawn?(game, origin, dest)
           :tower -> valid_move_tower?(game, origin, dest)
+          :horse -> valid_move_horse?(game, origin, dest)
           _ -> true
         end
       true ->
         false
     end
+  end
+
+  defp valid_move_horse?(_game, {x, y}, {z, w}) do
+    ((x + 2 == z || x - 2 == z) && (y + 1 == w || y - 1 == w)) ||
+    ((y + 2 == w || y - 2 == w) && (x + 1 == z || x - 1 == z))
   end
 
   defp valid_move_tower?(game, {x, y}, {z, w}) do
