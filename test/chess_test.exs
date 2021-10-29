@@ -205,4 +205,33 @@ defmodule Chess.ChessTest do
     refute Chess.valid_move?(game, {2, 3}, {0, 5})
     refute Chess.valid_move?(game, {2, 3}, {0, 1})
   end
+
+  test "valid_move? should return false when queen does a invalid move" do
+    refute Chess.new_game |> Chess.move({7, 3}, {4, 3})  |> Chess.valid_move?({4, 3}, {2, 2})
+  end
+
+
+  test "valid_move? should return true when queen moves diagonaly" do
+    game = Chess.new_game
+      |> Chess.move({7,3}, {4,3})
+
+    assert Chess.valid_move?(game, {4, 3}, {5, 4})
+    assert Chess.valid_move?(game, {4, 3}, {3, 2})
+  end
+
+  test "valid_move? should return true when queen moves horizontaly" do
+    game = Chess.new_game
+      |> Chess.move({7,3},{4, 3})
+
+    assert Chess.valid_move?(game, {4, 3}, {5, 3})
+    assert Chess.valid_move?(game, {4, 3}, {4, 4})
+    assert Chess.valid_move?(game, {4, 3}, {1, 3})
+  end
+
+  test "valid_move? shoudl return false when queen moves over another piece" do
+     game = Chess.new_game
+      |> Chess.move({7,3},{4, 3})
+
+    refute Chess.valid_move?(game, {4, 3}, {0, 3})
+  end
 end

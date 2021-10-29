@@ -44,11 +44,16 @@ defmodule Chess do
           :tower -> valid_move_tower?(game, origin, dest)
           :horse -> valid_move_horse?(game, origin, dest)
           :bishop -> valid_move_bishop?(game, origin, dest)
+          :queen -> valid_move_queen?(game, origin, dest)
           _ -> true
         end
       true ->
         false
     end
+  end
+
+  defp valid_move_queen?(game, origin, dest) do
+    valid_move_bishop?(game, origin, dest) || valid_move_tower?(game, origin, dest)
   end
 
   defp valid_move_bishop?(game, {x, y}, {z, w}) do
