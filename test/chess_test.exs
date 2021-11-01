@@ -283,15 +283,17 @@ defmodule Chess.ChessTest do
       {6, 7} => [{5, 7},{4, 7}],
       {7, 1} => [{5, 2}, {5, 0}],
       {7, 6} => [{5, 7}, {5, 5}]
-    }
+  }
   end
 
-  # test "valid_moves should return a set with all possible moves after some pieces have moved" do
-  #   moves = Chess.new_game()
-  #     |> Chess.move({6, 3}, {4, 3})
-  #     |> Chess.move({6, 4}, {4, 4})
-  #     |> Chess.valid_moves()
+  test "check? should return false in the game start" do
+    refute Chess.new_game() |> Chess.check?()
+  end
 
-  #   assert moves == %{}
-  # end
+  test "check? should return true if one of the other team pieces can move into the current player king" do
+    assert Chess.new_game()
+      |> Chess.move({6, 5}, {4, 5})
+      |> Chess.move({0, 3}, {4, 7})
+      |> Chess.check?()
+  end
 end

@@ -36,7 +36,21 @@ defmodule Chess do
     end
   end
 
-  def valid_move?(%{player: current_player, board: _board} = game, origin, dest) do
+  def check?(%{player: current_player} = game) do
+    next_player_game = next_player(game)
+    moves = valid_moves(next_player_game)
+
+    Enum.any? moves, fn({_k, v}) ->
+      Enum.any?(v, fn(x) ->
+        case value_at(game, x) do
+          {player, type} -> player == current_player && type == :king
+          nil -> false
+        end
+      end)
+    end
+  end
+
+  def valid_move?(%{player: current_player} = game, origin, dest) do
     base_conditions =
       case value_at(game, origin) do
         {player, _type} ->
