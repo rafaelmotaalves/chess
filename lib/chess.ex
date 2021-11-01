@@ -23,6 +23,19 @@ defmodule Chess do
     end
   end
 
+  def valid_moves(game) do
+    moves = for x <- 0..7, y <- 0..7, z <- 0..7, w <- 0..7, valid_move?(game, {x, y}, {z, w}) do
+      {{x, y}, {z, w}}
+    end
+
+    Enum.reduce moves, %{}, fn ({origin, dest}, acc) ->
+      cond do
+        l = Map.get(acc, origin) -> Map.put acc, origin, [dest | l]
+        true -> Map.put acc, origin, [dest]
+      end
+    end
+  end
+
   def valid_move?(%{player: current_player, board: _board} = game, origin, dest) do
     base_conditions =
       case value_at(game, origin) do
@@ -98,18 +111,18 @@ defmodule Chess do
   defp valid_move_pawn?(game, {x, y} = origin, {z, w}) do
     {player, _type} = value_at(game,  origin)
 
-    direction = case player do
-      :black -> 1
-      :white -> -1
+    {direction, initial_row} = case player do
+      :black -> {1, 1}
+      :white -> {-1, 6}
     end
 
     new_x = x + direction
-    (new_x == z) && !!cond do
+    ((new_x == z) && cond do
       y == w -> true
       y - 1 == w -> value_at(game, {new_x, y - 1})
       y + 1 == w -> value_at(game, {new_x, y + 1})
       true -> false
-    end
+    end) || (x == initial_row && x + direction * 2 == z && y == w)
   end
 
   def value_at(%{board: board}, pos) do

@@ -66,7 +66,6 @@ defmodule Chess.ChessTest do
   test "valid_move? should return false if the move is invalid - pawn - black" do
     game = Chess.new_game |> Chess.next_player()
 
-    refute Chess.valid_move?(game, {1, 0}, {3, 0})
     refute Chess.valid_move?(game, {1, 0}, {1, 1})
     refute Chess.valid_move?(game, {1, 0}, {2, 1})
     refute Chess.valid_move?(game, {1, 0}, {0, 0})
@@ -92,6 +91,17 @@ defmodule Chess.ChessTest do
     |> Chess.move({6, 0}, {2, 1})
     |> Chess.next_player()
     |> Chess.valid_move?({1, 0}, {2, 1})
+  end
+
+  test "valid_move? should return true if pawn moves two steps over if they are in their initial position" do
+    assert Chess.new_game()
+    |> Chess.valid_move?({6, 1}, {4, 1})
+  end
+
+  test "valid_move? should return false if pawn moves two steps outside the initial position" do
+    refute Chess.new_game()
+    |> Chess.move({6, 1}, {5, 1})
+    |> Chess.valid_move?({5, 1}, {3, 1})
   end
 
   test "valid_move? should return true if the tower moves in vertical lines" do
@@ -254,4 +264,34 @@ defmodule Chess.ChessTest do
     assert Chess.valid_move?(game, {4, 4}, {3, 3})
     assert Chess.valid_move?(game, {4, 4}, {5, 5})
   end
+
+  test "valid_moves should return a list" do
+    assert Chess.new_game() |> Chess.valid_moves() |> is_map()
+  end
+
+  test "valid_moves should return a set with all the possible moves at game start" do
+    moves = Chess.new_game |> Chess.valid_moves()
+
+    assert moves == %{
+      {6, 0} => [{5, 0},{4, 0}],
+      {6, 1} => [{5, 1},{4, 1}],
+      {6, 2} => [{5, 2},{4, 2}],
+      {6, 3} => [{5, 3},{4, 3}],
+      {6, 4} => [{5, 4},{4, 4}],
+      {6, 5} => [{5, 5},{4, 5}],
+      {6, 6} => [{5, 6},{4, 6}],
+      {6, 7} => [{5, 7},{4, 7}],
+      {7, 1} => [{5, 2}, {5, 0}],
+      {7, 6} => [{5, 7}, {5, 5}]
+    }
+  end
+
+  # test "valid_moves should return a set with all possible moves after some pieces have moved" do
+  #   moves = Chess.new_game()
+  #     |> Chess.move({6, 3}, {4, 3})
+  #     |> Chess.move({6, 4}, {4, 4})
+  #     |> Chess.valid_moves()
+
+  #   assert moves == %{}
+  # end
 end
