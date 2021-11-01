@@ -45,11 +45,19 @@ defmodule Chess do
           :horse -> valid_move_horse?(game, origin, dest)
           :bishop -> valid_move_bishop?(game, origin, dest)
           :queen -> valid_move_queen?(game, origin, dest)
+          :king -> valid_move_king?(game, origin, dest)
           _ -> true
         end
       true ->
         false
     end
+  end
+
+  defp valid_move_king?(_game, {x, y}, {z, w}) do
+    dx = abs(x - z)
+    dy = abs(y - w)
+
+    dx <= 1  && dy <= 1
   end
 
   defp valid_move_queen?(game, origin, dest) do

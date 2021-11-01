@@ -234,4 +234,24 @@ defmodule Chess.ChessTest do
 
     refute Chess.valid_move?(game, {4, 3}, {0, 3})
   end
+
+  test "valid_move? should return false when king moves more than one step" do
+    game = Chess.new_game
+      |> Chess.move({7, 4}, {4, 4})
+
+    refute Chess.valid_move?(game, {4, 4}, {2, 4})
+    refute Chess.valid_move?(game, {4, 4}, {2, 6})
+    refute Chess.valid_move?(game, {4, 4}, {2, 3})
+    refute game |> Chess.move({4, 4}, {2, 4}) |> Chess.valid_move?({2, 4}, {4, 4})
+  end
+
+  test "valid_move? should return true when king moves one tile horizontaly or vertically" do
+    game = Chess.new_game
+      |> Chess.move({7, 4}, {4, 4})
+
+    assert Chess.valid_move?(game, {4, 4}, {4, 3})
+    assert Chess.valid_move?(game, {4, 4}, {3, 4})
+    assert Chess.valid_move?(game, {4, 4}, {3, 3})
+    assert Chess.valid_move?(game, {4, 4}, {5, 5})
+  end
 end
