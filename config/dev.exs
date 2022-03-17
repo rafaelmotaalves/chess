@@ -5,7 +5,7 @@ config :chess, Chess.Repo,
   username: "postgres",
   password: "mysecretpassword",
   database: "chess_dev",
-  hostname: "192.168.64.2",
+  hostname: "localhost",
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
