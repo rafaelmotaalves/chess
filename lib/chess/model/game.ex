@@ -3,7 +3,7 @@ defmodule Chess.Model.Game do
   import Ecto.Changeset
 
   schema "games" do
-    has_many :moves, Chess.Model.Move
+    has_many :moves, Chess.Model.GameMove
   end
 
   def changeset(struct, params \\ %{}) do
