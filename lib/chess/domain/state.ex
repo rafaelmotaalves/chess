@@ -1,4 +1,4 @@
-defmodule Chess.Game do
+defmodule Chess.Domain.Game do
   defstruct board: [
     {:black, :tower},{:black, :horse},{:black, :bishop},{:black, :queen},{:black,:king}, {:black,:bishop},{:black, :horse},{:black, :tower},
     {:black, :pawn},{:black, :pawn},{:black, :pawn},{:black, :pawn},{:black, :pawn},{:black, :pawn},{:black, :pawn},{:black, :pawn},

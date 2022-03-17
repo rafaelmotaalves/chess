@@ -1,6 +1,7 @@
-defmodule Chess.ChessTest do
+defmodule Chess.Domain.ChessTest do
   use ExUnit.Case
-  alias Chess.Game
+  alias Chess.Domain.Game
+  alias Chess.Domain.Chess
 
   test "new_game should return a valid board" do
     %{board: board} = Chess.new_game()
