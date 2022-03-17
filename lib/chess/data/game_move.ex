@@ -1,9 +1,9 @@
-defmodule Chess.Model.GameMove do
+defmodule Chess.Data.GameMove do
   use Ecto.Schema
   import Ecto.Changeset
 
   schema "game_moves" do
-    belongs_to :game, Chess.Model.Game
+    belongs_to :game, Chess.Data.Game
     field :origin_x, :integer
     field :origin_y, :integer
     field :dest_x, :integer
